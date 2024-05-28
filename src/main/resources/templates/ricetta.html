@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Ricetta</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+
+<body>
+<div><a href="/static"><img src="/images/logo_siwFood.jpg" width="50%" /></a></div>
+<h1>Dettagli Ricetta</h1>
+<div th:if="${ricetta}">
+    <span th:text="${ricetta.name + ' by ' + ricetta.cuoco.surname}">Up!</span>
+    <ul>
+        <li th:each="ingrediente : ${ricetta.ingredienti}">
+            <span th:text="${ingrediente.key}"></span> - <span th:text="${ingrediente.value}"></span> g
+        </li>
+    </ul>
+</div>
+</body>
+
+</html>

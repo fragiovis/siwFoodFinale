@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Risultato della ricerca</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+
+<body>
+<div><a href="/static"><img src="/images/logo_siwFood.jpg" width="50%"/></a></div>
+<h1>Ricette che soddisfano i requisiti</h1>
+<div th:if="${ricette.isEmpty()}">Non ci sono ricette che soddisfano i requisiti</div>
+<ul th:if="${!ricette.isEmpty()}">
+    <li th:each="ricetta : ${ricette}">
+        <a href="ricetta.html" th:href="@{'/ricetta' + '/' + ${ricetta.id}}"
+           th:text="${ricetta.name} +' by '+ ${ricetta.cuoco.surname}">Up! (2000)</a>
+    </li>
+</ul>
+</body>
+
+</html>

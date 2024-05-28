@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Benvenuto</title>
+</head>
+<body>
+<h1>Benvenuto, <span th:text="${account.name}"></span> <span th:text="${account.surname}"></span>!</h1>
+<h1>Operazione su cuochi</h1>
+<div>
+    <a th:href="@{/admin/indexCuoco}">Gestisci i cuochi</a>
+    </div>
+<h1>Operazione su ricette</h1>
+<div>
+    <a th:href="@{/admin/indexRicetta}">Gestisci le ricette</a>
+</div>
+</body>
+</html>

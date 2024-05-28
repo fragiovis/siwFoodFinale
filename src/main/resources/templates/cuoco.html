@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cuoco</title>
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+
+<body>
+<div><a href="/static"><img src="/images/logo_siwFood.jpg" width="50%" /></a></div>
+<h1>Dettagli Cuoco</h1>
+<div th:if="${cuoco}">
+    <span th:text="${cuoco.name} + ' ' + ${cuoco.surname}">Up!</span>
+    <span th:text="'(' + ${cuoco.dateOfBirth} + ')'">2000</span>
+</div>
+<div th:unless="${cuoco}">Non esiste</div>
+</body>
+
+</html>
