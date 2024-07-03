@@ -4,10 +4,12 @@ import it.uniroma3.siw.model.Cuoco;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CuocoRepository extends CrudRepository<Cuoco,Long> {
 
-    Iterable<Cuoco> findAll();
+    List<Cuoco> findAll();
 
-    Iterable<Cuoco>findBySurname(String surname);
+    List<Cuoco>findBySurname(String surname);
 }

@@ -1,22 +1,278 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="it">
 <head>
-    <title>Di che hai voglia oggi? Scopri le nostre ricette</title>
-    <link rel="stylesheet" href="/css/stile.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwFood</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 60px;
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            background-color: #faf0e6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 300px);
+            padding: 40px 20px;
+            flex-direction: column;
+        }
+
+        .main-content-text {
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid #ced4da;
+            font-size: 1rem;
+        }
+
+        .recipe-card {
+            width: 18rem;
+            margin: 1rem;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.05);
+        }
+
+        .recipe-card img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .recipe-card .card-body {
+            padding: 1rem;
+            background-color: #ffffff;
+        }
+
+        .recipe-card .card-title {
+            font-size: 1.25rem;
+            color: #343a40;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .recipe-card .card-text {
+            font-size: 1rem;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .recipe-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem 0;
+            width: 100%;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
-<h1>Puoi scorrerle una per una...</h1>
-<div>
-    <a href="/ricette">Tutte le ricette</a>
+
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href=''">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <div class="right-section">
+                    <button class="btn" onclick="location.href='login'">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>
 
-
-<h1>Puoi ricercarle per nome...</h1>
-<div>
-    <a href="/formSearchRicette">Cerca ricetta per nome</a>
+<div class="main-content">
+    <div class="main-content-text">
+        <h1>Di che cosa hai voglia oggi?</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Cerca ricetta per nome...">
+        </div>
+    </div>
+    <div class="recipe-list" id="recipeList">
+        <th:block th:each="ricetta : ${ricette}">
+            <div class="card recipe-card">
+                <a th:href="@{/ricetta/{id}(id=${ricetta.id})}">
+                    <img th:if="${ricetta.immagine}" th:src="@{${ricetta.immagine}}" class="card-img-top" alt="Immagine di ${ricetta.name}">
+                    <img th:unless="${ricetta.immagine}" src="/images/logo_siwFood.png" class="card-img-top" alt="Immagine di ${ricetta.name}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${ricetta.name}"></h5>
+                    <p class="card-text" th:text="${ricetta.cuoco.name} + ' ' + ${ricetta.cuoco.surname}"></p>
+                </div>
+            </div>
+        </th:block>
+    </div>
 </div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        var input = this.value.toLowerCase();
+        var recipeCards = document.getElementsByClassName('recipe-card');
+        for (var i = 0; i < recipeCards.length; i++) {
+            var title = recipeCards[i].querySelector('.card-title').innerText.toLowerCase();
+            if (title.includes(input)) {
+                recipeCards[i].style.display = 'block';
+            } else {
+                recipeCards[i].style.display = 'none';
+            }
+        }
+    });
+</script>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>

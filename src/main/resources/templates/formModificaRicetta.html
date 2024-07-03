@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifica Ricetta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 60px;
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            background-color: #faf0e6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 300px);
+            padding: 40px 20px;
+            flex-direction: column;
+        }
+
+        .main-content-text {
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ingrediente {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href='/chef/index'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="btn" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <button class="btn" th:onclick="|location.href='/chef/mieRicette'|">
+                    <i class="fas fa-book"></i> Le tue ricette
+                </button>
+                <button class="btn" th:onclick="|location.href='/chef/profilo'|">
+                    <i class="fas fa-user"></i> Profilo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chef/indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chef/indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/chef/indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="main-content-text">
+        <h1 class="mt-4 mb-4">Modifica Ricetta</h1>
+        <p th:if="${ricetta == null}">Ricetta non trovata!</p>
+        <form th:if="${ricetta != null}"
+              th:action="@{/chef/{cuocoId}/modificaRicetta/{ricettaId}(cuocoId=${cuocoId}, ricettaId=${ricetta.id})}"
+              th:object="${ricetta}" method="post">
+            <div class="form-group">
+                <label for="name">Nome Ricetta:</label>
+                <input type="text" id="name" name="name" th:value="*{name}" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" name="descrizione" class="form-control" rows="5" th:text="*{descrizione}" required></textarea>
+            </div>
+            <div id="righeRicetta">
+                <div th:each="riga, rigaIndex : *{righeRicetta}" class="form-row riga-ricetta">
+                    <div class="form-group col-md-5">
+                        <label th:for="${'ingrediente-' + rigaIndex.index}">Ingrediente:</label>
+                        <select th:id="${'ingrediente-' + rigaIndex.index}"
+                                th:name="righeRicetta[__${rigaIndex.index}__].ingrediente.id" class="form-control">
+                            <option th:each="ingrediente : ${ingredientiDisponibili}"
+                                    th:value="${ingrediente.id}"
+                                    th:text="${ingrediente.nome}"
+                                    th:selected="${ingrediente != null && ingrediente.id == riga.ingrediente.id}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label th:for="${'quantita-' + rigaIndex.index}">Quantità:</label>
+                        <input type="text" th:id="${'quantita-' + rigaIndex.index}"
+                               th:name="righeRicetta[__${rigaIndex.index}__].quantita" th:value="*{righeRicetta[__${rigaIndex.index}__].quantita}"
+                               class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" onclick="rimuoviRigaRicetta(this)" class="btn btn-danger mt-4">Rimuovi</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" onclick="aggiungiRigaRicetta()" class="btn btn-primary mt-4">Aggiungi Ingrediente</button>
+            <button type="submit" class="btn btn-success mt-4">Salva Modifiche</button>
+        </form>
+        <div class="mt-4 text-center">
+            <p>Non hai trovato un ingrediente? <a href="#" th:href="@{/chef/{cuocoId}/aggiungiIngrediente(cuocoId=${cuocoId})}" class="btn-custom-blue">Aggiungilo nel sistema!</a></p>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function aggiungiRigaRicetta() {
+        const container = document.getElementById('righeRicetta');
+        const index = container.children.length; // Calcola il prossimo indice disponibile
+
+        // Recupera gli ingredienti disponibili da una variabile globale
+        const ingredientiDisponibili = /*[[${ingredientiDisponibili}]]*/ [];
+
+        const div = document.createElement('div');
+        div.className = 'form-row riga-ricetta';
+
+        const select = document.createElement('select');
+        select.id = `ingrediente-${index}`;
+        select.name = `righeRicetta[${index}].ingrediente.id`;
+        select.className = 'form-control';
+
+        // Popola il select con le opzioni degli ingredienti
+        ingredientiDisponibili.forEach(ingrediente => {
+            const option = document.createElement('option');
+            option.value = ingrediente.id;
+            option.text = ingrediente.nome;
+            select.appendChild(option);
+        });
+
+        div.innerHTML = `
+            <div class="form-group col-md-5">
+                <label for="ingrediente">Ingrediente:</label>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="quantita">Quantità:</label>
+                <input type="text" id="quantita-${index}" name="righeRicetta[${index}].quantita" placeholder="Quantità"
+                       class="form-control" required>
+            </div>
+            <div class="form-group col-md-2">
+                <button type="button" onclick="rimuoviRigaRicetta(this)" class="btn btn-danger mt-4">Rimuovi</button>
+            </div>
+        `;
+
+        div.querySelector('.form-group').appendChild(select);
+        container.appendChild(div);
+    }
+
+    function rimuoviRigaRicetta(button) {
+        var container = button.parentElement.parentElement;
+        container.remove();
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

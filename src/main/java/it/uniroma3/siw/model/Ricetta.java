@@ -6,32 +6,36 @@ import java.util.*;
 @Entity
 public class Ricetta {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_ricetta")
+    @SequenceGenerator(name = "seq_ricetta", sequenceName = "seq_ricetta", allocationSize = 1)
     private Long id;
     private String name;
 
     @ManyToOne
+    @JoinColumn(name = "cuoco_id")
     private Cuoco cuoco;
-    @ElementCollection
-    public Map<String,Integer> ingredienti;
+    @OneToMany(mappedBy = "ricetta", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RigaRicetta> righeRicetta;
+    private String descrizione;
+    private String immagine;
 
     public Ricetta() {
-        this.ingredienti = new HashMap<>();
+        this.righeRicetta = new ArrayList<>();
     }
 
-    public Map<String,Integer> getIngredienti() {
-        return ingredienti;
+    public List<RigaRicetta> getRigheRicetta() {
+        return righeRicetta;
     }
 
     public Ricetta(Long id, String name, Cuoco cuoco) {
         this.id = id;
         this.name = name;
-        this.ingredienti = new HashMap<String,Integer>();
+        this.righeRicetta = new ArrayList<>();
         this.cuoco = cuoco;
     }
 
-    public void setIngredienti(Map<String,Integer> ingredienti) {
-        this.ingredienti = ingredienti;
+    public void setIngredienti(List<RigaRicetta> righeRicetta) {
+        this.righeRicetta = righeRicetta;
     }
 
     public Long getId() {
@@ -58,16 +62,27 @@ public class Ricetta {
         this.cuoco = cuoco;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ricetta ricetta = (Ricetta) o;
-        return Objects.equals(id, ricetta.id) && Objects.equals(name, ricetta.name) && Objects.equals(cuoco, ricetta.cuoco) && Objects.equals(ingredienti, ricetta.ingredienti);
-    }
+
+
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, cuoco, ingredienti);
+        return Objects.hash(id, name, cuoco, righeRicetta);
+    }
+
+    public void setRigheRicetta(List<RigaRicetta> righeRicetta) {
+        this.righeRicetta = righeRicetta;
+    }
+    public String getDescrizione() {
+        return descrizione;
+    }
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
+    public String getImmagine() {
+        return immagine;
+    }
+    public void setImmagine(String immagine) {
+        this.immagine = immagine;
     }
 }

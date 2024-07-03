@@ -1,18 +1,245 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Benvenuto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwFood</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between; /* Modificato da space-around a space-between */
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-between; /* Modificato da space-around a space-between */
+            padding: 0 185px; /* Mantiene il padding come nel primo HTML */
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0; /* Rimuove il margine per uniformità */
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        #welcome-section {
+            background-color: #faf0e6;
+            padding: 20px;
+            text-align: center; /* Allinea il testo al centro */
+            margin-top: 40px; /* Aumentata la spaziatura per la nuova posizione */
+            z-index: 0;
+        }
+
+        #welcome-section h1 {
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif; /* Font meno formale */
+            font-size: 28px; /* Dimensione del carattere ridotta */
+        }
+
+        #welcome-section h2 {
+            margin-top: 20px;
+            font-family: 'Poppins', sans-serif; /* Font meno formale */
+            font-size: 40px; /* Dimensione del carattere ridotta */
+            color: #e95b1c;
+            font-variant: small-caps;
+        }
+
+        .chef-card {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .chef-card img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .chef-card .card-body {
+            padding: 20px;
+        }
+
+        .recipe-card {
+            width: 18rem;
+            margin: 1rem;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.05);
+        }
+
+        .recipe-card img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .recipe-card .card-body {
+            padding: 1rem;
+            background-color: #ffffff;
+        }
+
+        .recipe-card .card-title {
+            font-size: 1.25rem;
+            color: #343a40;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .recipe-card .card-text {
+            font-size: 1rem;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .recipe-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+    </style>
 </head>
 <body>
-<h1>Benvenuto, <span th:text="${account.name}"></span> <span th:text="${account.surname}"></span>!</h1>
-<h1>Operazione su cuochi</h1>
-<div>
-    <a th:href="@{/admin/indexCuoco}">Gestisci i cuochi</a>
-    </div>
-<h1>Operazione su ricette</h1>
-<div>
-    <a th:href="@{/admin/indexRicetta}">Gestisci le ricette</a>
+
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href='/admin/index'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <div class="right-section">
+                    <button class="btn" onclick="location.href='/logout'">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                <button class="btn" th:onclick="|location.href='/admin/profilo'|">
+                    <i class="fas fa-user"></i> Profilo
+                </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto"> <!-- Utilizzato mx-auto per centrare gli elementi -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
 </div>
+
+<div id="welcome-section">
+    <h1 style="font-size: 36px;">Benvenuto su SiwFood!</h1>
+    <p>SiwFood è il tuo punto di riferimento per scoprire nuove ricette, imparare dai migliori cuochi e trovare gli ingredienti più freschi per le tue preparazioni. Nato come un progetto appassionato, SiwFood mira a portare la cucina di qualità nelle case di tutti, condividendo conoscenze, tecniche e segreti culinari.</p>
+
+    <h2 style="margin-top: 40px;">i cuochi più premiati</h2>
+    <div class="recipe-list" id="recipeList">
+        <th:block th:each="cuoco : ${cuochi}">
+            <div class="card recipe-card">
+                <a th:href="@{/admin/cuoco/{id}(id=${cuoco.id})}">
+                    <img th:if="${cuoco.account.immagine}" th:src="@{${cuoco.account.immagine}}" class="card-img-top" alt="Immagine di ${cuoco.name}">
+                    <img th:unless="${cuoco.account.immagine}" src="/images/logo_siwFood.png" class="card-img-top" alt="Immagine di ${cuoco.name}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${cuoco.name} + ' ' + ${cuoco.surname}"></h5>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

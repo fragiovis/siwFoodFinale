@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli Ricetta</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 60px;
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            background-color: #faf0e6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 300px);
+            padding: 40px 20px;
+            flex-direction: column;
+        }
+
+        .main-content-text {
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .details-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .details-text {
+            width: 60%;
+        }
+
+        .details-image {
+            width: 35%;
+        }
+
+        .details-image img {
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-info {
+            margin-top: 1rem;
+        }
+
+        .recipe-info ul {
+            padding: 0;
+            list-style-type: none;
+        }
+
+        .recipe-info li {
+            margin-bottom: 0.5rem;
+        }
+
+        .recipe-info span {
+            display: block;
+            font-size: 1.1rem;
+        }
+
+        .ricetta-name {
+            font-size: 2rem;
+            color: #156715;
+        }
+
+    </style>
+</head>
+<body>
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href='/admin/index'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="btn" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <button class="btn" th:onclick="|location.href='/admin/profilo'|">
+                    <i class="fas fa-user"></i> Profilo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="main-content-text">
+        <div class="details-container">
+            <div class="details-text">
+                <div th:if="${ricetta}">
+                    <strong class="ricetta-name"th:text="${ricetta.name}"></strong>
+                    <span class="cuoco-name" th:text="' by ' + ${ricetta.cuoco.surname}"></span>
+                    <p th:text="${ricetta.descrizione}">Descrizione della ricetta</p>
+                    <div class="recipe-info">
+                        <ul>
+                            <li th:each="rigaRicetta : ${ricetta.righeRicetta}">
+                                <span th:text="${rigaRicetta.ingrediente.nome}"></span><span th:text="${rigaRicetta.quantita}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="details-image">
+                <img th:if="${ricetta.immagine}" th:src="@{${ricetta.immagine}}" class="card-img-top" alt="Immagine di ${ricetta.name}">
+                <img th:unless="${ricetta.immagine}" src="/images/logo_siwFood.png" class="card-img-top" alt="Immagine di ${ricetta.name}">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

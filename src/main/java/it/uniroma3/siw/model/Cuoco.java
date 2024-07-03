@@ -5,15 +5,28 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Entity
-public class Cuoco {
+public class Cuoco implements Comparable<Cuoco> {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cuoco_seq")
+    @SequenceGenerator(name = "cuoco_seq", sequenceName = "cuoco_sequence", allocationSize = 1)
     private Long id;
     private String name;
     private String surname;
-    private LocalDate dateOfBirth;
-    @OneToMany
+    private Date dateOfBirth;
+    @OneToMany(mappedBy = "cuoco", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Ricetta> ricette;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
+
+    public Cuoco(String name, String surname, Date dateOfBirth, Account account) {
+        this.name = name;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+        this.ricette = new ArrayList<>();
+        this.account = account;
+    }
 
     public Cuoco() {
         this.ricette = new ArrayList<>();
@@ -47,11 +60,11 @@ public class Cuoco {
         this.surname = surname;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -70,5 +83,18 @@ public class Cuoco {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, surname, dateOfBirth);
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    @Override
+    public int compareTo(Cuoco o) {
+        return this.name.compareTo(o.name);
+    }
+
+    public Account getAccount() {
+        return account;
     }
 }

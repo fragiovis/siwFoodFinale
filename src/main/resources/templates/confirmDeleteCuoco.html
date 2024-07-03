@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+        <html lang="it">
+        <head>
+        <meta charset="UTF-8">
+        <title>Conferma Cancellazione Cuoco</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 5rem;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Conferma Cancellazione</h2>
+        </div>
+        <div class="card-body text-center">
+            <p>Sei sicuro di voler eliminare il cuoco <strong th:text="${cuoco.name} + ' ' + ${cuoco.surname}"></strong>?</p>
+            <form th:action="@{/admin/deleteCuoco/{id}(id=${cuoco.id})}" method="post">
+                <button type="submit" class="btn btn-danger">Cancella</button>
+                <a th:href="@{/admin/indexCuoco}" class="btn btn-secondary">Annulla</a>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

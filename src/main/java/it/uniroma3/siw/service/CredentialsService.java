@@ -22,4 +22,7 @@ public class CredentialsService {
         this.credentialsRepository.save(credentials);
     }
 
+    public Credentials findByUsername(String username) {
+        return this.credentialsRepository.findByUsername(username);
+    }
 }

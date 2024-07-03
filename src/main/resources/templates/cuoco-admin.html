@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiwFood</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cuoco-image img {
+            border-radius: 10px; /* Bordo arrotondato */
+            height: 300px; /* Altezza dell'immagine */
+            width: 200px; /* Larghezza dell'immagine */
+            object-fit: cover;
+            margin-right: 100px;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 60px;
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            background-color: #faf0e6;
+            margin-top: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 300px);
+            padding: 20px 20px 40px;
+            flex-direction: column;
+        }
+
+        .main-content-text {
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .recipe-card {
+            width: 18rem;
+            margin: 1rem;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .recipe-card:hover {
+            transform: scale(1.05);
+        }
+
+        .recipe-card img {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .recipe-card .card-body {
+            padding: 1rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .recipe-card .card-title {
+            font-size: 1.25rem;
+            color: #343a40;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .recipe-card .card-text {
+            font-size: 1rem;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .recipe-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.5rem 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-action {
+            margin: 0.25rem 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-action .btn {
+            margin: 0.25rem 0;
+            width: 100%;
+        }
+
+        .cuoco-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .cuoco-info-left {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .cuoco-info-right {
+            text-align: right;
+        }
+
+        .cuoco-info h2 {
+            font-size: 1.5rem;
+            color: #343a40;
+            margin: 0;
+        }
+
+        .cuoco-info p {
+            font-size: 1rem;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        .nomecognome{
+            font-size: 2rem;
+            color: orangered;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href='/admin/index'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="btn" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <button class="btn" th:onclick="|location.href='/admin/profilo'|">
+                    <i class="fas fa-user"></i> Profilo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="cuoco-info">
+        <div class="cuoco-info-left">
+            <h2 class="nomecognome" th:text="${cuoco.name} + ' ' + ${cuoco.surname}"></h2>
+            <p th:text="${#dates.format(cuoco.dateOfBirth, 'dd/MM/yyyy')}"></p>
+        </div>
+        <div class="cuoco-info-right">
+            <div class="cuoco-image">
+                <img th:if="${cuoco.account.immagine}" th:src="@{${cuoco.account.immagine}}" alt="Immagine di ${cuoco.name}">
+                <img th:unless="${cuoco.account.immagine}" src="/images/logo_siwFood.png" alt="Immagine di ${cuoco.name}">
+            </div>
+        </div>
+    </div>
+    <div class="recipe-list" id="recipeList">
+        <th:block th:each="ricetta : ${ricette}">
+            <div class="card recipe-card">
+                <a th:href="@{/admin/ricetta/{id}(id=${ricetta.id})}">
+                    <img th:if="${ricetta.immagine}" th:src="@{${ricetta.immagine}}" class="card-img-top" alt="Immagine di ${cuoco.name}">
+                    <img th:unless="${ricetta.immagine}" src="/images/logo_siwFood.png" class="card-img-top" alt="Immagine di ${cuoco.name}">
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${ricetta.name}"></h5>
+                    <p class="card-text" th:text="${ricetta.cuoco.name} + ' ' + ${ricetta.cuoco.surname}"></p>
+                    <div class="btn-action">
+                        <button class="btn btn-success" th:onclick="|location.href='/admin/${ricetta.cuoco.id}/modificaRicetta/${ricetta.id}'|">
+                            <i class="fas fa-edit"></i> Modifica
+                        </button>
+                        <form th:action="@{'/admin/' + ${ricetta.cuoco.id} + '/eliminaRicetta/' + ${ricetta.id}}" method="post" style="margin: 0;">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Elimina
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const titles = document.querySelectorAll('.card-title');
+        titles.forEach(title => {
+            if (title.textContent.length > 20) {
+                title.textContent = title.textContent.substring(0, 20) + '...';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

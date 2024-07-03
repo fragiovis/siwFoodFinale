@@ -3,8 +3,12 @@ package it.uniroma3.siw.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.uniroma3.siw.model.Account;
+import it.uniroma3.siw.model.Credentials;
 import it.uniroma3.siw.model.Cuoco;
 import it.uniroma3.siw.model.Ricetta;
+import it.uniroma3.siw.repository.CredentialsRepository;
+import it.uniroma3.siw.service.CredentialsService;
 import it.uniroma3.siw.service.CuocoService;
 import it.uniroma3.siw.service.RicettaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class CuocoController {
@@ -25,10 +30,32 @@ public class CuocoController {
     @Autowired
     private RicettaService ricettaService;
 
+
     @GetMapping("/cuoco/{id}")
     public String getCuoco(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("cuoco", this.cuocoService.findById(id));
+        Cuoco cuoco = this.cuocoService.findById(id);
+        model.addAttribute("cuoco", cuoco);
+        List<Ricetta> ricette = cuoco.getRicette();
+        model.addAttribute("ricette", ricette);
         return "cuoco.html";
+    }
+
+    @GetMapping("/admin/cuoco/{id}")
+    public String getCuocoAdmin(@PathVariable("id") Long id, Model model) {
+        Cuoco cuoco = this.cuocoService.findById(id);
+        model.addAttribute("cuoco", cuoco);
+        List<Ricetta> ricette = cuoco.getRicette();
+        model.addAttribute("ricette", ricette);
+        return "cuoco-admin.html";
+    }
+
+    @GetMapping("/chef/cuoco/{id}")
+    public String getCuocoChef(@PathVariable("id") Long id, Model model) {
+        Cuoco cuoco = this.cuocoService.findById(id);
+        model.addAttribute("cuoco", cuoco);
+        List<Ricetta> ricette = cuoco.getRicette();
+        model.addAttribute("ricette", ricette);
+        return "cuoco-chef.html";
     }
 
     @GetMapping("/cuochi")
@@ -62,99 +89,43 @@ public class CuocoController {
     }
 
     @GetMapping("/indexCuoco")
-    public String indexCuoco() {
+    public String indexCuoco(Model model) {
+        model.addAttribute("cuochi", this.cuocoService.findAll());
         return "indexCuoco.html";
     }
     @GetMapping("/admin/indexCuoco")
     public String indexCuocoAdmin(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName(); // Ottiene il nome dell'utente autenticato
-        model.addAttribute("username", username);
+        model.addAttribute("cuochi", this.cuocoService.findAll());
         return "indexCuoco-admin.html";
     }
 
-
-    @GetMapping("/managerCuochi")
-    public String cuocoManager(Model model) {
+    @GetMapping("/chef/indexCuoco")
+    public String indexCuocoChef(Model model) {
         model.addAttribute("cuochi", this.cuocoService.findAll());
-        return "managerCuochi.html";
+        return "indexCuoco-chef.html";
     }
 
-    @GetMapping("/formUpdateCuoco/{id}")
-    public String update(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("cuoco", this.cuocoService.findById(id));
-        return "formUpdateCuoco.html";
-    }
 
-    @GetMapping("addRicetta/{id}")
-    public String addRicetta(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("ricette", this.ricettaService.findAll());
-        model.addAttribute("cuoco", this.cuocoService.findById(id));
-        return "directorsToAdd.html";
-    }
-
-    @GetMapping("setRicettaToCuoco/{ricettaId}/{cuocoId}")
-    public String setRicettaToCuoco(@PathVariable("ricettaId") Long ricettaId, @PathVariable("cuocoId") Long cuocoId, Model model) {
-
-        Ricetta ricetta = this.ricettaService.findById(ricettaId);
-        Cuoco cuoco = this.cuocoService.findById(cuocoId);
-        cuoco.addRicetta(ricetta);
-        this.cuocoService.save(cuoco);
-
-        model.addAttribute("cuoco", cuoco);
-        return "formUpdateCuoco.html";
-    }
-
-    @GetMapping("updateRicette/{id}")
-    public String updateRicette(@PathVariable("id") Long id, Model model) {
-
-        List<Ricetta> ricetteToAdd = this.ricetteToAdd(id);
-        model.addAttribute("ricetteToAdd", ricetteToAdd);
-        model.addAttribute("cuoco", this.cuocoService.findById(id));
-        return "updateActors.html";
-    }
-//lista di ricette che non appartengono al cuoco
-    private List<Ricetta> ricetteToAdd(Long cuocoId) {
-        List<Ricetta> ricetteToAdd = new ArrayList<>();
-
-        for (Ricetta r : ricettaService.findRicetteNotInCuoco(cuocoId)) {
-            ricetteToAdd.add(r);
+    @GetMapping("/admin/deleteCuoco/{id}")
+    public String showDeleteConfirmation(@PathVariable("id") Long id, Model model) {
+        Cuoco cuoco = cuocoService.findById(id);
+        if (cuoco == null) {
+            // Gestisci il caso in cui il cuoco non sia trovato (ad esempio, reindirizza a una pagina di errore o gestisci l'errore in altro modo)
+            return "redirect:/admin/indexCuoco";
         }
-        return ricetteToAdd;
+        model.addAttribute("cuoco", cuoco);
+        return "confirmDeleteCuoco.html";
     }
 
-
-    @GetMapping("addRicettaToCuoco/{ricettaId}/{cuocoId}")
-    public String addRicettaToCuoco(@PathVariable("ricettaId") Long ricettaId, @PathVariable("cuocoId") Long cuocoId, Model model) {
-
-        Ricetta ricetta = this.ricettaService.findById(ricettaId);
-        Cuoco cuoco = this.cuocoService.findById(cuocoId);
-        List<Ricetta> ricette = cuoco.getRicette();
-
-        ricette.add(ricetta);
-        this.cuocoService.save(cuoco);
-
-        List<Ricetta> ricetteToAdd = this.ricetteToAdd(cuocoId);
-        model.addAttribute("ricetteToAdd", ricetteToAdd);
-        model.addAttribute("cuoco", this.cuocoService.findById(cuocoId));
-        return "updateRicette.html";
-    }
-
-    @GetMapping("removeRicettaFromCuoco/{ricettaId}/{cuocoId}")
-    public String removeRicettaFromCuoco(@PathVariable("ricettaId") Long ricettaId, @PathVariable("cuocoId") Long cuocoId, Model model) {
-
-        Cuoco cuoco = this.cuocoService.findById(cuocoId);
-        Ricetta ricetta = this.ricettaService.findById(ricettaId);
-        List<Ricetta> ricette = cuoco.getRicette();
-        ricette.remove(ricetta);
-        this.cuocoService.save(cuoco);
-
-        List<Ricetta> ricetteToAdd = ricetteToAdd(cuocoId);
-
-        model.addAttribute("ricetteToAdd", ricetteToAdd);
-        model.addAttribute("cuoco", this.cuocoService.findById(cuocoId));
-
-        return "updateRicette.html";
+    @PostMapping("/admin/deleteCuoco/{id}")
+    public String deleteCuoco(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            cuocoService.deleteById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Cuoco cancellato con successo!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Errore nella cancellazione del cuoco: " + e.getMessage());
+        }
+        return "redirect:/admin/indexCuoco";
     }
 
 }

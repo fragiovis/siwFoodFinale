@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indice Ingredienti</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #faf0e6; /* Sfondo della pagina */
+    }
+
+    .top-bar-wrapper {
+      background: url('/images/barraSiwFood.png') no-repeat center top;
+      background-size: cover;
+      height: 300px;
+      padding-bottom: 40px;
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 1000;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .top-bar .right-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .top-bar .btn {
+      background-color: #FF5733;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin-left: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+
+    .top-bar .btn.home {
+      background-color: transparent;
+      color: #FF5733;
+      border: none;
+      font-size: 16px;
+      margin-left: 0;
+    }
+
+    .navbar-custom {
+      background-color: #156715;
+      width: 100%;
+      position: relative;
+      top: 300px;
+      z-index: 999;
+    }
+
+    .navbar-custom .navbar-collapse {
+      justify-content: space-between;
+    }
+
+    .navbar-custom .navbar-nav {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 185px;
+    }
+
+    .navbar-custom .nav-item {
+      padding: 0;
+    }
+
+    .navbar-custom .nav-link {
+      color: #faf0e6 !important;
+      font-size: 1.2em;
+      margin: 0;
+    }
+
+    .navbar-custom .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    #welcome-section {
+      background-color: #faf0e6;
+      padding: 20px;
+      text-align: center;
+      margin-top: 80px;
+      z-index: 0;
+    }
+
+    #welcome-section h1 {
+      margin-top: 20px;
+      font-family: 'Arial', sans-serif;
+      font-size: 36px;
+      font-weight: bold;
+      color: #FF5733;
+    }
+
+    #welcome-section h2 {
+      margin-top: 40px;
+      font-family: 'Arial', sans-serif;
+      font-size: 24px;
+    }
+
+    .ingredient-section {
+      margin: 40px 150px;
+    }
+
+    .ingredient-card {
+      background-color: white; /* Sfondo bianco per le card */
+      padding: 20px;
+      border-radius: 0.5rem;
+      box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ingredient-card h5 {
+      font-weight: bold;
+    }
+
+    .ingredient-card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
+
+    .ingredient-card-container .ingredient-card {
+      flex: 1 1 calc(16.66% - 20px); /* Sei card per riga con margini */
+      margin: 10px;
+    }
+
+    @media (max-width: 768px) {
+      .ingredient-card-container .ingredient-card {
+        flex: 1 1 calc(25% - 20px); /* Quattro card per riga per schermi medi */
+      }
+    }
+
+    @media (max-width: 576px) {
+      .ingredient-card-container .ingredient-card {
+        flex: 1 1 calc(50% - 20px); /* Due card per riga per schermi piccoli */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar-wrapper">
+  <header>
+    <div class="top-bar">
+      <div class="right-section">
+        <button class="btn home" onclick="location.href=''">
+          <i class="fas fa-home"></i> Home
+        </button>
+        <div class="right-section">
+          <button class="btn" onclick="location.href='/login'">
+            <i class="fas fa-sign-in-alt"></i> Login
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/indexCuoco">Cuochi</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/indexRicetta">Ricette</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/indexIngrediente">Ingredienti</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div id="welcome-section">
+  <h1>Abbiamo una vasta selezione di ingredienti nel nostro database</h1>
+</div>
+
+<div class="container ingredient-section">
+  <div class="ingredient-card-container">
+    <div class="ingredient-card" th:each="ingrediente : ${ingredienti}">
+      <h5 th:text="${ingrediente.nome}">Nome Ingrediente</h5>
+    </div>
+  </div>
+</div>
+
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

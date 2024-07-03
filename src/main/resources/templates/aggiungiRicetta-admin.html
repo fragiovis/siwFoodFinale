@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiungi Ricetta</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-bar-wrapper {
+            background: url('/images/barraSiwFood.png') no-repeat center top;
+            background-size: cover;
+            height: 300px;
+            padding-bottom: 40px;
+        }
+
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .top-bar .right-section {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar .btn {
+            background-color: #FF5733;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .top-bar .btn.home {
+            background-color: transparent;
+            color: #FF5733;
+            border: none;
+            font-size: 16px;
+            margin-left: 0;
+        }
+
+        .navbar-custom {
+            background-color: #156715;
+            width: 100%;
+            position: relative;
+            top: 300px;
+            z-index: 999;
+        }
+
+        .navbar-custom .navbar-collapse {
+            justify-content: space-between;
+        }
+
+        .navbar-custom .navbar-nav {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 0 60px;
+        }
+
+        .navbar-custom .nav-item {
+            padding: 0;
+        }
+
+        .navbar-custom .nav-link {
+            color: #faf0e6 !important;
+            font-size: 1.2em;
+            margin: 0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            text-decoration: underline;
+        }
+
+        .main-content {
+            background-color: #faf0e6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: calc(100vh - 300px);
+            padding: 40px 20px;
+            flex-direction: column;
+        }
+
+        .main-content-text {
+            width: 100%;
+            text-align: left;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .ingrediente {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="top-bar-wrapper">
+    <header>
+        <div class="top-bar">
+            <div class="right-section">
+                <button class="btn home" onclick="location.href='/admin/index'">
+                    <i class="fas fa-home"></i> Home
+                </button>
+                <button class="btn" onclick="location.href='/logout'">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+                <button class="btn" th:onclick="|location.href='/admin/profilo'|">
+                    <i class="fas fa-user"></i> Profilo
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexCuoco">Cuochi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexRicetta">Ricette</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/indexIngrediente">Ingredienti</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="main-content">
+    <div class="main-content-text">
+        <h1>Aggiungi Ricetta</h1>
+
+        <div th:if="${error}" class="alert alert-info" role="alert">
+            <p class="err" th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/admin/aggiungiRicetta}"
+              method="post" enctype="multipart/form-data">
+
+            <!-- Nome della ricetta -->
+            <div class="form-group">
+                <label for="name">Nome Ricetta:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+
+            <!-- Descrizione della ricetta -->
+            <div class="form-group">
+                <label for="descrizione">Descrizione:</label>
+                <textarea id="descrizione" name="descrizione" class="form-control" required></textarea>
+            </div>
+
+            <!-- Campo per l'immagine -->
+            <div class="form-group">
+                <label for="immagine">Immagine:</label>
+                <input type="file" id="immagine" name="immagine" class="form-control-file" accept="image/*">
+            </div>
+
+            <!-- Campo per la selezione del cuoco -->
+            <div class="form-group">
+                <label for="cuocoId">Seleziona Cuoco:</label>
+                <select id="cuocoId" name="cuocoId" class="form-control" required>
+                    <option th:each="cuoco : ${cuochi}"
+                            th:value="${cuoco.id}"
+                            th:text="${cuoco.name}+' '+${cuoco.surname}">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Campi per le righe della ricetta -->
+            <div id="righeRicetta">
+                <!-- Questo blocco può essere generato dinamicamente con JavaScript -->
+                <!-- Ad esempio, aggiungendo righe con JavaScript -->
+                <div class="form-row riga-ricetta">
+                    <div class="form-group col-md-5">
+                        <label for="ingredienteId">Ingrediente:</label>
+                        <select id="ingredienteId-0" name="ingredienteId" class="form-control" required>
+                            <option th:each="ingrediente : ${ingredientiDisponibili}"
+                                    th:value="${ingrediente.id}"
+                                    th:text="${ingrediente.nome}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <label for="quantita">Quantità:</label>
+                        <input type="text" id="quantita-0" name="quantita" class="form-control" required>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" onclick="rimuoviRigaRicetta(this)" class="btn btn-danger mt-4">Rimuovi</button>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="aggiungiRigaRicetta()" class="btn btn-primary mt-4">Aggiungi Ingrediente</button>
+            <button type="submit" class="btn btn-success mt-4">Salva Modifiche</button>
+        </form>
+        <div class="mt-4 text-center">
+            <p>Non hai trovato un ingrediente? <a href="#" th:href="@{/admin/aggiungiIngrediente}" class="btn-custom-blue">Aggiungilo nel sistema!</a></p>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    function aggiungiRigaRicetta() {
+        const container = document.getElementById('righeRicetta');
+        const index = container.children.length; // Calcola il prossimo indice disponibile
+
+        // Recupera gli ingredienti disponibili da una variabile globale
+        const ingredientiDisponibili = /*[[${ingredientiDisponibili}]]*/ [];
+
+        const div = document.createElement('div');
+        div.className = 'form-row riga-ricetta';
+
+        const select = document.createElement('select');
+        select.id = `ingredienteId-${index}`;
+        select.name = `ingredienteId`;
+        select.className = 'form-control';
+
+        // Popola il select con le opzioni degli ingredienti
+        ingredientiDisponibili.forEach(ingrediente => {
+            const option = document.createElement('option');
+            option.value = ingrediente.id;
+            option.text = ingrediente.nome;
+            select.appendChild(option);
+        });
+
+        div.innerHTML = `
+            <div class="form-group col-md-5">
+                <label for="ingredienteId">Ingrediente:</label>
+            </div>
+            <div class="form-group col-md-5">
+                <label for="quantita">Quantità:</label>
+                <input type="text" id="quantita-${index}" name="quantita" placeholder="Quantità"
+                       class="form-control" required>
+            </div>
+            <div class="form-group col-md-2">
+                <button type="button" onclick="rimuoviRigaRicetta(this)" class="btn btn-danger mt-4">Rimuovi</button>
+            </div>
+        `;
+
+        div.querySelector('.form-group').appendChild(select);
+        container.appendChild(div);
+    }
+
+    function rimuoviRigaRicetta(button) {
+        var container = button.parentElement.parentElement;
+        container.remove();
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>
